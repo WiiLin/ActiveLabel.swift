@@ -82,7 +82,11 @@ typealias ElementTuple = (range: NSRange, element: ActiveElement, type: ActiveTy
     open func handleURLTap(_ handler: @escaping (URL) -> ()) {
         urlTapHandler = handler
     }
-    
+
+    open func handleURLTapBegan(_ handler: @escaping (URL) -> ()) {
+        urlTapBeganHandler = handler
+    }
+
     open func handleCustomTap(for type: ActiveType, handler: @escaping (String) -> ()) {
         customTapHandlers[type] = handler
     }
@@ -199,6 +203,10 @@ typealias ElementTuple = (range: NSRange, element: ActiveElement, type: ActiveTy
                     updateAttributesWhenSelected(false)
                     selectedElement = element
                     updateAttributesWhenSelected(true)
+                    switch element.element {
+                    case .url(let originalURL, _): self.didTapBeganStringURL(originalURL)
+                    default: break
+                    }
                 }
                 avoidSuperCall = true
             } else {
@@ -240,6 +248,7 @@ typealias ElementTuple = (range: NSRange, element: ActiveElement, type: ActiveTy
     internal var mentionTapHandler: ((String) -> ())?
     internal var hashtagTapHandler: ((String) -> ())?
     internal var urlTapHandler: ((URL) -> ())?
+    internal var urlTapBeganHandler: ((URL) -> ())?
     internal var customTapHandlers: [ActiveType : ((String) -> ())] = [:]
     
     fileprivate var mentionFilterPredicate: ((String) -> Bool)?
@@ -502,7 +511,14 @@ typealias ElementTuple = (range: NSRange, element: ActiveElement, type: ActiveTy
         }
         urlHandler(url)
     }
-    
+
+    fileprivate func didTapBeganStringURL(_ stringURL: String) {
+        guard let urlHandler = urlTapBeganHandler, let url = URL(string: stringURL) else {
+            return
+        }
+        urlHandler(url)
+    }
+
     fileprivate func didTap(_ element: String, for type: ActiveType) {
         guard let elementHandler = customTapHandlers[type] else {
             delegate?.didSelect(element, type: type)
