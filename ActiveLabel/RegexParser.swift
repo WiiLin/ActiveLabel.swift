@@ -10,11 +10,9 @@ import Foundation
 
 struct RegexParser {
 
-    static let hashtagPattern = "(?:^|\\s|$)#[\\p{L}0-9_]*"
+    static let hashtagPattern = "#[\\p{L}\\p{N}_]+"
     static let mentionPattern = "(?:^|\\s|$|[.])@[\\p{L}0-9_]*"
-    static let urlPattern = "(^|[\\s.:;?\\-\\]<\\(])" +
-        "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" +
-    "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
+    static let urlPattern = "((?:http|https)://)?(?:[\\w\\d\\-_]+\\.)?[\\w\\d\\-_]+\\.\\w{2,3}(\\.\\w{2})?(/(?<=/)(?:[\\w\\d\\-./_]+)?)?"
 
     private static var cachedRegularExpressions: [String : NSRegularExpression] = [:]
 
