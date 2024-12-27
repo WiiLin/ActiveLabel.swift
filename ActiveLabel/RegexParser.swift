@@ -12,7 +12,8 @@ struct RegexParser {
 
     static let hashtagPattern = "#[\\p{L}\\p{N}_]+"
     static let mentionPattern = "(?:^|\\s|$|[.])@[\\p{L}0-9_]*"
-    static let urlPattern = "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" + "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
+//    static let urlPattern = "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+[\\w/#](\\(\\))?)" + "(?=$|[\\s',\\|\\(\\).:;?\\-\\[\\]>\\)])"
+        static let urlPattern = "((https?://|www\\.|pic\\.)[-\\w;/?:@&=+$\\|\\_.!~*\\|'()\\[\\]%#,☺]+)"
 
     private static var cachedRegularExpressions: [String : NSRegularExpression] = [:]
 
